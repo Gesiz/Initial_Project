@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-# 用户自带的用户模型
+# Django自带的用户模型
 
 """
 
