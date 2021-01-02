@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 # Django自带的用户模型
 
 """

@@ -15,8 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.http import HttpResponse
 
+from django.urls import register_converter
+from utils.converter import UsernameConverter
+register_converter(UsernameConverter, 'uc')
+
+from django.http import HttpResponse
 
 # def test(request):
 #     # 1 导入系统的日志
@@ -36,5 +40,5 @@ from django.http import HttpResponse
 urlpatterns = [
     path('admin/', admin.site.urls),
     # path('test/', test)
-    path('',include('apps.users.urls')),
+    path('', include('apps.users.urls')),
 ]
