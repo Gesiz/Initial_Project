@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site','api.meiduo.site', '127.0.0.1']
-
+MYSERVER_HOSTS = '172.30.112.102'
 # Application definition
 
 INSTALLED_APPS = [
@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '172.29.185.48',
+        'HOST': f'{MYSERVER_HOSTS}',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'mysql',
@@ -126,14 +126,14 @@ STATIC_URL = '/static/'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://172.29.185.48:6379/0',
+        'LOCATION': f'redis://{MYSERVER_HOSTS}/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     },
     'session': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://172.29.185.48:6379/1',
+        'LOCATION': f'redis://{MYSERVER_HOSTS}:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
