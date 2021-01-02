@@ -52,11 +52,18 @@ class RegisterView(View):
         if not re.match('[a-zA-Z0-9_-]{5,20}', username):
             return JsonResponse({'code': 400, 'errmsg': '用户名不满足条件'})
         # 3.3 验证密码是否符合规则
+        if not re.match('[a-zA-Z0-9]{8,20}',password):
+            return JsonResponse({'code':400,'errmsg':'password格式有误'})
+
         # 3.4 验证密码和确认密码一致
+        if password != password2:
+            return JsonResponse({'code':400,'errmsg':'两次输入不一致'})
         # 3.5 验证手机号是否符合规格
-
+        if not re.match('1[3-9]\d{9}',mobile):
+            return JsonResponse({'code':400,'errmsg':'mobile格式有误'})
         # 4 保存数据到 Mysql
-
+        if not allow:
+            return JsonResponse({'code':400,'errmsg':'allow格式有误'})
         # 注意 密码需要加密
 
         # create_user
