@@ -17,7 +17,9 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.urls import register_converter
-from utils.converter import UsernameConverter
+from utils.converter import UsernameConverter, MobileConverter
+
+register_converter(MobileConverter, 'mc')
 register_converter(UsernameConverter, 'uc')
 
 from django.http import HttpResponse
