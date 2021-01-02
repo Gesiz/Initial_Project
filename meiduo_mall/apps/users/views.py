@@ -55,5 +55,18 @@ class RegisterView(View):
             password=password2,
             mobile=mobile,
         )
+        # 5 状态保持
+        # request.session['id'] = user.id
 
+        # django 自带后台 后台也是采用的session技术
+
+        # django 实现了 session 状态保持
+
+        from  django.contrib.auth import login
+        # 参数 1 request 请求对象
+        # 参数 2 user 用户信息
+
+        login(request,user)
+
+        # 6 返回响应
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
