@@ -24,7 +24,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['api.meiduo.site', '127.0.0.1']
+ALLOWED_HOSTS = ['www.meiduo.site','api.meiduo.site', '127.0.0.1']
 
 # Application definition
 
@@ -36,9 +36,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apps.users',
+    'corsheaders',
 ]
-
+# 把 cors 的中间件 放在最上边
+# 放在最上边的意思是请求前先执行
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -46,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
 ]
 
 ROOT_URLCONF = 'meiduo_mall.urls'
@@ -182,3 +187,12 @@ LOGGING = {
 
 # 指定本项目的用户模型类
 AUTH_USER_MODEL = 'users.User'
+
+CORS_ORIGIN_WHITELIST=(
+    'http://127.0.0.1:8080',
+    'http://localhost:8080',
+    'http://www.meiduo.site:8080',
+    'http://www.meiduo.site:8000',
+)
+
+CORS_ALLOW_CREDENTIALS = True
