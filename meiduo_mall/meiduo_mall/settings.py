@@ -24,7 +24,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['api.meiduo.site', '127.0.0.1']
 
 # Application definition
 
@@ -73,7 +73,7 @@ WSGI_APPLICATION = 'meiduo_mall.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'HOST': '127.0.0.1',
+        'HOST': '172.29.185.48',
         'PORT': '3306',
         'USER': 'root',
         'PASSWORD': 'mysql',
@@ -120,14 +120,14 @@ STATIC_URL = '/static/'
 CACHES = {
     'default': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/0',
+        'LOCATION': 'redis://172.29.185.48:6379/0',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
     },
     'session': {
         'BACKEND': 'django_redis.cache.RedisCache',
-        'LOCATION': 'redis://127.0.0.1:6379/1',
+        'LOCATION': 'redis://172.29.185.48:6379/1',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
@@ -137,8 +137,6 @@ CACHES = {
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 # 保存在哪个数据库中
 SESSION_CACHE_ALIAS = 'default'
-
-
 
 LOGGING = {
     'version': 1,
