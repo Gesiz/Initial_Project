@@ -20,7 +20,7 @@ class MobileConverter:
 
 
 class UUIDConverter:
-    regex = r'[\w-]'
+    regex = r'[\w-]+'
 
     def to_python(self, value):
         return value
