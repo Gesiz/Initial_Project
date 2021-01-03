@@ -24,7 +24,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.meiduo.site','api.meiduo.site', '127.0.0.1']
+ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
 MYSERVER_HOSTS = '172.30.112.102'
 # Application definition
 
@@ -138,6 +138,13 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    },
+    'code': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{MYSERVER_HOSTS}:6379/2',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
 # 让我们的session保存到缓存中
@@ -189,7 +196,7 @@ LOGGING = {
 # 指定本项目的用户模型类
 AUTH_USER_MODEL = 'users.User'
 
-CORS_ORIGIN_WHITELIST=(
+CORS_ORIGIN_WHITELIST = (
     'http://127.0.0.1:8080',
     'http://localhost:8080',
     'http://www.meiduo.site:8080',
