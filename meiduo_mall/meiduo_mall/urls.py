@@ -17,10 +17,11 @@ from django.contrib import admin
 from django.urls import path, include
 
 from django.urls import register_converter
-from utils.converter import UsernameConverter, MobileConverter
+from utils.converter import UsernameConverter, MobileConverter, UUIDConverter
 
 register_converter(MobileConverter, 'mc')
 register_converter(UsernameConverter, 'uc')
+register_converter(UUIDConverter, 'uuid')
 
 from django.http import HttpResponse
 
@@ -43,5 +44,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('test/', test)
     path('', include('apps.users.urls')),
-    path('',include('apps.users.urls'))
+    path('', include('apps.verifications.urls'))
 ]
