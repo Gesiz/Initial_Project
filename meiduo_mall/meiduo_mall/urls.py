@@ -43,4 +43,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     # path('test/', test)
     path('', include('apps.users.urls')),
+    path('',include('apps.users.urls'))
 ]
