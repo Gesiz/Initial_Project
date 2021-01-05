@@ -10,6 +10,7 @@ from django.views import View
 from apps.users.models import User
 from django.http import JsonResponse
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class UsernameCountView(View):
@@ -107,7 +108,14 @@ class LoginView(View):
         # 3 验证参数
         if not all([username, password]):
             pass
+
+        if re.match(r'1[3-9]\d{9}', username):
+            User.USERNAME_FIELD = 'mobile'
+        else:
+            User.USERNAME_FIELD = 'username'
+
         # 4 认证登录用户
+
         user = authenticate(username=username, password=password)
         if user is None:
             return JsonResponse({'code': 400, 'errmsg': '密码不正确'})
@@ -121,5 +129,32 @@ class LoginView(View):
         else:
             request.session.set_expiry(0)
 
+        response = JsonResponse({'code': 0, 'errmsg': 'ok'})
         # 7 返回响应
-        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+        response.set_cookie('username', username, max_age=14 * 24 * 3600)
+        return response
+
+
+class LogoutView(View):
+
+    def delete(self, request):
+        from django.contrib.auth import logout
+        logout(request)
+        response = JsonResponse({'code': 0, 'errmsg': '退出成功'})
+        response.delete_cookie('username')
+        return response
+
+
+from utils.views import LoinRequiredJSONMixin
+
+
+class UserInfoVIew(LoinRequiredJSONMixin, View):
+    def get(self, request):
+        user = request.user
+        user_info = {
+            'username': user.username,
+            'mobile': user.mobile,
+            'email': user.email,
+            'email_activate': False,  # 明天才讲 email_active 先给一个固定值
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': user_info})

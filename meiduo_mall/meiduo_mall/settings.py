@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users',
     'apps.verifications',
+    'apps.oauth',
     'corsheaders',
 ]
 # 把 cors 的中间件 放在最上边

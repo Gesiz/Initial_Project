@@ -8,7 +8,7 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     """自定义用户模型类"""
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机号')
-
+    # USERNAME_FIELD = 'mobile'
     class Meta:
         db_table = 'tb_users'
         verbose_name = '用户'
