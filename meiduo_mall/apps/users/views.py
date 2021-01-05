@@ -7,9 +7,9 @@ from django.shortcuts import render
 
 
 from django.views import View
-
 from apps.users.models import User
 from django.http import JsonResponse
+from django.contrib.auth import login, authenticate
 
 
 class UsernameCountView(View):
@@ -72,7 +72,7 @@ class RegisterView(View):
                 mobile=mobile,
             )
         except Exception as e:
-            return JsonResponse({'code':400,'errmsg':'注册失败'})
+            return JsonResponse({'code': 400, 'errmsg': '注册失败'})
         # 5 状态保持
         # request.session['id'] = user.id
 
@@ -88,3 +88,38 @@ class RegisterView(View):
 
         # 6 返回响应
         return JsonResponse({'code': 0, 'errmsg': '注册成功'})
+
+
+class LoginView(View):
+    def post(self, request):
+        """
+        :param request:
+        :return:
+        """
+        data = json.loads(request.body.decode())
+        # 1 接收请求数据
+
+        # 2 提取数据
+
+        username = data.get('username')
+        password = data.get('password')
+        rememberd = data.get('remembered')
+        # 3 验证参数
+        if not all([username, password]):
+            pass
+        # 4 认证登录用户
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return JsonResponse({'code': 400, 'errmsg': '密码不正确'})
+        # 5 状态保持
+
+        login(request, user)
+
+        # 6 要根据是否记住登录
+        if rememberd:
+            request.session.set_expiry(None)
+        else:
+            request.session.set_expiry(0)
+
+        # 7 返回响应
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
