@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
-MYSERVER_HOSTS = '172.30.112.102'
+MYSERVER_HOSTS = '172.23.39.39'
 # Application definition
 
 INSTALLED_APPS = [

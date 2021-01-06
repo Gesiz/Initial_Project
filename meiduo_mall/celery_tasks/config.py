@@ -1,2 +1,2 @@
 # key = value
-broker_url = 'redis://172.30.112.102/15'
+broker_url = 'redis://172.23.39.39/15'

@@ -155,6 +155,6 @@ class UserInfoVIew(LoinRequiredJSONMixin, View):
             'username': user.username,
             'mobile': user.mobile,
             'email': user.email,
-            'email_activate': False,  # 明天才讲 email_active 先给一个固定值
+            'email_activate': user.email_active,  # 明天才讲 email_active 先给一个固定值
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': user_info})
