@@ -155,8 +155,9 @@ class UserInfoVIew(LoinRequiredJSONMixin, View):
             'username': user.username,
             'mobile': user.mobile,
             'email': user.email,
-            'email_activate': user.email_active,  # 明天才讲 email_active 先给一个固定值
+            'email_active': user.email_active,  # 明天才讲 email_active 先给一个固定值
         }
+        print(user_info)
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': user_info})
 
 
@@ -174,15 +175,42 @@ class EmailView(View):
         user = request.user
         user.email = email
         user.save()
+
         # 6 发送激活文件
-        from django.core.mail import send_mail
-        subject = '麋鹿'
-        message = '我是赵子旭 我可太帅了啊 我怎么能这么帅啊 ！！！！！！！！！！！！！！！！！！！！！！！！！！！'
-        from_email = '美多商城<qi_rui_hua@163.com>'
-        recipient_list = [email,'qi_rui_hua@163.com']
-        send_mail(subject,
-                  message,
-                  from_email,
-                  recipient_list)
+        from apps.users.utils import generic_user_id
+        token = generic_user_id(user.id)
+        verify_url = 'http://www.meiduo.site:8080/success_verify_email.html?token=%s' % token
+        html_message = '<p>尊敬的用户您好！</p>' \
+                       '<p>感谢您使用美多商城。</p>' \
+                       '<p>您的邮箱为：%s 。请点击此链接激活您的邮箱：</p>' \
+                       '<p><a href="%s">%s<a></p>' % (email, verify_url, verify_url)
+
+        from celery_tasks.email.tasks import celery_send_email
+        print(email)
+        celery_send_email.delay(email, html_message)
+
         # 7 返回响应
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+class VerifyEmailView(View):
+    def put(self, request):
+        # 1 接收请求
+        data = request.GET
+        token = data.get('token')
+        from apps.users.utils import check_user_id
+        user_id = check_user_id(token)
+        print(user_id)
+        if user_id is None:
+            return JsonResponse({'code': 400, 'errmsg': '链接失效'})
+        print(111111111111111111111)
+        # 有可能换浏览器
+        try:
+            user = User.objects.get(id=user_id)
+        except User.DoesNotExist:
+            return JsonResponse({'code': 400, 'errmsg': '链接失效'})
+        print(111111111111111111111)
+        user.email_active = True
+        user.save()
+        print(22222222222222222222)
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
