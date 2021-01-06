@@ -158,3 +158,31 @@ class UserInfoVIew(LoinRequiredJSONMixin, View):
             'email_activate': user.email_active,  # 明天才讲 email_active 先给一个固定值
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': user_info})
+
+
+class EmailView(View):
+    def put(self, request):
+        # 1 判断用户是否登录
+
+        # 2 接收请求
+        data = json.loads(request.body.decode())
+        # 3 提取参数
+        email = data.get('email')
+        # 4 验证参数
+
+        # 5 更新用户信息
+        user = request.user
+        user.email = email
+        user.save()
+        # 6 发送激活文件
+        from django.core.mail import send_mail
+        subject = '麋鹿'
+        message = '我是赵子旭 我可太帅了啊 我怎么能这么帅啊 ！！！！！！！！！！！！！！！！！！！！！！！！！！！'
+        from_email = '美多商城<qi_rui_hua@163.com>'
+        recipient_list = [email,'qi_rui_hua@163.com']
+        send_mail(subject,
+                  message,
+                  from_email,
+                  recipient_list)
+        # 7 返回响应
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
