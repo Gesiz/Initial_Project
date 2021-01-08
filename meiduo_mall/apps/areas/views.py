@@ -15,3 +15,8 @@ class ProvinceView(View):
             })
 
         return JsonResponse({'code':0,'errmsg':'ok','province_list':province_list})
+
+class SubAreaView(View):
+
+    def get(self,request,pk):
+        pass

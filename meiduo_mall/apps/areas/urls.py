@@ -1,6 +1,8 @@
 from django.urls import path
-from apps.areas.views import ProvinceView
+# from apps.areas.views import ProvinceView
+from . import views
 
 urlpatterns = [
-    path('areas/', ProvinceView.as_view())
+    path('areas/', views.ProvinceView.as_view()),
+    path('aress/<pk>', views.SubAreaView.as_view()),
 ]
