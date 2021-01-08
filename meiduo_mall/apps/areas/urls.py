@@ -4,5 +4,5 @@ from . import views
 
 urlpatterns = [
     path('areas/', views.ProvinceView.as_view()),
-    path('aress/<pk>', views.SubAreaView.as_view()),
+    path('areas/<pk>/', views.SubAreaView.as_view()),
 ]
