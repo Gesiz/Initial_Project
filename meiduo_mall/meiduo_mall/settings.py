@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
-MYSERVER_HOSTS = '172.23.39.39'
+MYSERVER_HOSTS = '172.25.42.144'
 # Application definition
 
 INSTALLED_APPS = [
@@ -217,3 +217,7 @@ EMAIL_HOST_USER = 'qi_rui_hua@163.com'
 EMAIL_HOST_PASSWORD = '123456abc'
 # 收件人看到的发件人
 EMAIL_FROM = '美多商城<qi_rui_hua@163.com>'
+
+###############################
+
+DEFAULT_FILE_STORAGE = 'utils.storage.QiniuStorage'
