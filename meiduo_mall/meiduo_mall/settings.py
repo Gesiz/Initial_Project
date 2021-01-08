@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'apps.oauth',
     'corsheaders',
     'apps.areas',
+    'apps.contents',
+    'apps.goods',
 ]
 # 把 cors 的中间件 放在最上边
 # 放在最上边的意思是请求前先执行
