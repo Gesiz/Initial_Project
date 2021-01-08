@@ -214,3 +214,11 @@ class VerifyEmailView(View):
         user.save()
         print(22222222222222222222)
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+##################地址管理##########################
+
+class CreateAddressView(View):
+
+    def post(self,request):
+        pass
