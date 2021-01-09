@@ -80,17 +80,9 @@ def get_contents():
 
 
 def get_breadcrumb(category):
-    dict = {
-        'cat1': '',
-        'cat2': '',
-        'cat3': '',
-    }
+    idict = {'cat1': category.parent.parent.name, 'cat2': category.parent.name, 'cat3': category.name}
 
-    dict['cat3'] = category.name
-    dict['cat2'] = category.parent.name
-    dict['cat1'] = category.parent.parent.name
-
-    return dict
+    return idict
 
 
 """
