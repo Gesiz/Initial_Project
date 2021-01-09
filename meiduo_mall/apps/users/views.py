@@ -146,10 +146,10 @@ class LogoutView(View):
         return response
 
 
-from utils.views import LoinRequiredJSONMixin
+from utils.views import LoginRequiredJSONMixin
 
 
-class UserInfoVIew(LoinRequiredJSONMixin, View):
+class UserInfoVIew(LoginRequiredJSONMixin, View):
     def get(self, request):
         user = request.user
         user_info = {
@@ -219,7 +219,7 @@ class VerifyEmailView(View):
 
 ##################地址管理##########################
 
-class CreateAddressView(LoinRequiredJSONMixin, View):
+class CreateAddressView(LoginRequiredJSONMixin, View):
 
     def post(self, request):
         json_dict = json.loads(request.body.decode())
@@ -282,7 +282,7 @@ class CreateAddressView(LoinRequiredJSONMixin, View):
         return JsonResponse({'code': 0, 'errmsg': '新增地址成功', 'address': address_dict})
 
 
-class AddressesListView(LoinRequiredJSONMixin, View):
+class AddressesListView(LoginRequiredJSONMixin, View):
 
     def get(self, request):
         """提供地址管理界面

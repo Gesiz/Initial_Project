@@ -10,5 +10,5 @@ class QiniuStorage(Storage):
 
     def url(self, name):
         # name name 其实就是
-        print(11111111111111111111111111)
+
         return 'http://qmllvum7m.hn-bkt.clouddn.com/'+name
