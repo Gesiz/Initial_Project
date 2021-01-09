@@ -322,3 +322,56 @@ class AddressesListView(LoginRequiredJSONMixin, View):
                              'errmsg': 'ok',
                              'addresses': address_dict_list,
                              'default_address_id': default_id})
+
+
+################用户浏览记录########################
+from apps.goods.models import SKU
+from django_redis import get_redis_connection
+
+
+class UserHistoryView(LoginRequiredJSONMixin, View):
+
+    def post(self, request):
+        # 0 必须是登录用户
+
+        # 1 接收请求
+        data = json.loads(request.body.decode())
+        # 2 提取参数
+        sku_id = data.get('sku_id')
+        # 3 验证参数
+        try:
+            SKU.objects.get(id=sku_id)
+        except Exception:
+            return JsonResponse({'code': 0, 'errmsg': 'wrong'})
+
+        # 4 连接redis
+        redis_cli = get_redis_connection('history')
+        # 5 去重
+        redis_cli.lrem(request.user.id, 0, sku_id)
+        # 6 增加数据
+        redis_cli.lpush(request.user.id, sku_id)
+
+        # 7 最多只保存5条数据
+        redis_cli.ltrim(request.user.id, 0, 4)
+        # 8 返回响应
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+    def get(self, request):
+        """获取用户浏览记录"""
+        # 获取Redis存储的sku_id列表信息
+
+        redis_conn = get_redis_connection('history')
+        sku_ids = redis_conn.lrange(f'{request.user.id}', 0, -1)
+
+        # 根据sku_ids列表数据，查询出商品sku信息
+        skus = []
+        for sku_id in sku_ids:
+            sku = SKU.objects.get(id=sku_id)
+            skus.append({
+                'id': sku.id,
+                'name': sku.name,
+                'default_image_url': sku.default_image.url,
+                'price': sku.price
+            })
+
+        return JsonResponse({'code': 0, 'errmsg': 'OK', 'skus': skus})

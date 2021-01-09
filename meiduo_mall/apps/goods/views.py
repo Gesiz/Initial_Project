@@ -130,7 +130,7 @@ class DetailView(View):
         # 1 获取商品id
         try:
             sku = SKU.objects.get(id=sku_id)
-        except SKU.DoserNotExist:
+        except SKU.DoesNotExist:
             return JsonResponse({'code': 400, 'errmsg': '商品不存在'})
 
         # 2 根据商品 id 查询商品信息
@@ -149,3 +149,41 @@ class DetailView(View):
         }
 
         return render(request, 'detail.html', context=context)
+
+
+###################################
+class CategoryVisitView(View):
+    def post(self, request, category_id):
+
+        # 1 获取分类ID
+
+        # 2 根据分类ID 查询分类数据
+        try:
+            category = GoodsCategory.objects.get(id=category_id)
+        except GoodsCategory.DoesNotExist:
+            return JsonResponse({'code': 0, 'errmsg': '没有次分类'})
+
+        # 3 获取当天日期
+        from datetime import date
+        today = date.today()
+
+        # 4 我们要查询数据库 是否存在 分类 和日期的记录
+        from apps.goods.models import GoodsVisitCount
+        try:
+            print(1111111111111111111111111111111111)
+            gvc = GoodsVisitCount.objects.get(category=category, date=today)
+            print(1111111111111111111111111111111111)
+        except Exception:
+            GoodsVisitCount.objects.create(
+                category=category,
+                date=date,
+                count=1,
+            )
+
+            # 5 如果不存在则增加记录
+        else:
+            gvc.count += 1
+            gvc.save()
+
+        # 6 如果存在则 修改 count
+        return JsonResponse({'code': 0, 'errmsg': 'OK'})

@@ -150,6 +150,13 @@ CACHES = {
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
+    },
+    'history': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{MYSERVER_HOSTS}:6379/3',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
     }
 }
 # 让我们的session保存到缓存中
@@ -256,3 +263,5 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
  1290  service cron restart
  1291  sudo service cron restart
  """
+
+
