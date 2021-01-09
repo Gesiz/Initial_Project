@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.areas',
     'apps.contents',
     'apps.goods',
+    'django_crontab',
 ]
 # 把 cors 的中间件 放在最上边
 # 放在最上边的意思是请求前先执行
@@ -221,3 +222,37 @@ EMAIL_FROM = '美多商城<qi_rui_hua@163.com>'
 ###############################
 
 DEFAULT_FILE_STORAGE = 'utils.storage.QiniuStorage'
+
+
+#############################添加定时任务####################
+CRONJOBS = [
+    # 每1分钟生成一次首页静态文件
+    ('*/1 * * * *', 'apps.contents.crons.generate_static_index_html', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log'))
+]
+CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
+""""
+
+ 1267  pip install django_crontab
+
+ 1269  pip install QQLoginTool
+
+ 1271  pip install itsdangerous
+
+ 1273  pip install Pillow
+
+
+ 1282  service cron status
+ 1283  service cron start
+ 
+ 1284  sudo service cron start
+ 1285  cat /var/log/cron.log
+ 
+ 1286  crontab -l
+ 1287  vi /etc/rsyslog.d/50-default.conf
+ 1288  sudo vi /etc/rsyslog.d/50-default.conf
+ 
+ 1289  sudo service rsyslog restart
+ 
+ 1290  service cron restart
+ 1291  sudo service cron restart
+ """
