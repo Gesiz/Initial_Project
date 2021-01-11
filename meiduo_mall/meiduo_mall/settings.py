@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
-MYSERVER_HOSTS = '172.25.42.144'
+MYSERVER_HOSTS = '172.25.33.24'
 # Application definition
 
 INSTALLED_APPS = [
@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'apps.areas',
     'apps.contents',
     'apps.goods',
+    'apps.carts',
+    'apps.orders',
     'django_crontab',
 ]
 # 把 cors 的中间件 放在最上边
@@ -154,6 +156,13 @@ CACHES = {
     'history': {
         'BACKEND': 'django_redis.cache.RedisCache',
         'LOCATION': f'redis://{MYSERVER_HOSTS}:6379/3',
+        'OPTIONS': {
+            'CLIENT_CLASS': 'django_redis.client.DefaultClient',
+        }
+    },
+    'carts': {
+        'BACKEND': 'django_redis.cache.RedisCache',
+        'LOCATION': f'redis://{MYSERVER_HOSTS}:6379/4',
         'OPTIONS': {
             'CLIENT_CLASS': 'django_redis.client.DefaultClient',
         }
