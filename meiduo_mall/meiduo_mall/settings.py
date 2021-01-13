@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'apps.goods',
     'apps.carts',
     'apps.orders',
+    'apps.payment',
     'django_crontab',
 ]
 # 把 cors 的中间件 放在最上边
