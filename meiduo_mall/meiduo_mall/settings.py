@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
-MYSERVER_HOSTS = '172.25.33.24'
+MYSERVER_HOSTS = '172.28.213.19'
 # Application definition
 
 INSTALLED_APPS = [
@@ -275,3 +275,9 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
  """
 
 
+ALIPAY_APPID = '2016091600523030'
+ALIPAY_DEBUG = True
+ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
+ALIPAY_RETURN_URL = 'http://www.meiduo.site:8000/pay_success.html'
+APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/app_private_key.pem')
+ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/alipay_public_key.pem')

@@ -170,9 +170,9 @@ class CategoryVisitView(View):
         # 4 我们要查询数据库 是否存在 分类 和日期的记录
         from apps.goods.models import GoodsVisitCount
         try:
-            print(1111111111111111111111111111111111)
+
             gvc = GoodsVisitCount.objects.get(category=category, date=today)
-            print(1111111111111111111111111111111111)
+
         except Exception:
             GoodsVisitCount.objects.create(
                 category=category,
