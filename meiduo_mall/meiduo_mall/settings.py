@@ -25,7 +25,7 @@ SECRET_KEY = 'e%28pmvyh4mc0w%dc4kov-4c!8$u4svcwmmdv9wtoo^r@)mwbd'
 DEBUG = True
 
 ALLOWED_HOSTS = ['www.meiduo.site', 'api.meiduo.site', '127.0.0.1']
-MYSERVER_HOSTS = '172.28.213.19'
+MYSERVER_HOSTS = '192.168.169.2'
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'apps.orders',
     'apps.payment',
     'django_crontab',
+    'haystack',
 ]
 # 把 cors 的中间件 放在最上边
 # 放在最上边的意思是请求前先执行
@@ -240,11 +241,12 @@ EMAIL_FROM = '美多商城<qi_rui_hua@163.com>'
 
 DEFAULT_FILE_STORAGE = 'utils.storage.QiniuStorage'
 
-
 #############################添加定时任务####################
 CRONJOBS = [
     # 每1分钟生成一次首页静态文件
-    ('*/1 * * * *', 'apps.contents.crons.generate_static_index_html', '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log'))
+    (
+        '*/1 * * * *', 'apps.contents.crons.generate_static_index_html',
+        '>> ' + os.path.join(BASE_DIR, 'logs/crontab.log'))
 ]
 CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
 """"
@@ -274,10 +276,25 @@ CRONTAB_COMMAND_PREFIX = 'LANG_ALL=zh_cn.UTF-8'
  1291  sudo service cron restart
  """
 
-
 ALIPAY_APPID = '2016091600523030'
 ALIPAY_DEBUG = True
 ALIPAY_URL = 'https://openapi.alipaydev.com/gateway.do'
 ALIPAY_RETURN_URL = 'http://www.meiduo.site:8000/pay_success.html'
 APP_PRIVATE_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/app_private_key.pem')
 ALIPAY_PUBLIC_KEY_PATH = os.path.join(BASE_DIR, 'apps/payment/keys/alipay_public_key.pem')
+
+#########haystack################################搜索######################################
+# Haystack
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE':
+            'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',  # 搜索引擎
+        'URL': 'http://192.168.169.2:9200/',  # Elasticsearch服务器ip地址，端口号固定为9200
+        'INDEX_NAME': 'meiduo_mall',  # Elasticsearch建立的索引库的名称
+    },
+}
+HAYSTACK_SEARCH_RESULTS_PER_PAGE = 10
+
+
+
+

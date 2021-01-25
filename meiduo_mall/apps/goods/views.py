@@ -187,3 +187,28 @@ class CategoryVisitView(View):
 
         # 6 如果存在则 修改 count
         return JsonResponse({'code': 0, 'errmsg': 'OK'})
+
+
+from haystack.views import SearchView
+
+
+class MySearchView(SearchView):
+    '''重写SearchView类'''
+
+    def create_response(self):
+        # 获取搜索结果
+        context = self.get_context()
+        object_list = context.get('page').object_list
+        data_list = []
+        for sku in object_list:
+            data_list.append({
+                'id': sku.object.id,
+                'name': sku.object.name,
+                'price': sku.object.price,
+                'default_image_url': sku.object.default_image.url,
+                'searchkey': context.get('query'),
+                'page_size': context['page'].paginator.num_pages,
+                'count': context['page'].paginator.count
+            })
+        # 拼接参数, 返回
+        return JsonResponse(data_list, safe=False)
