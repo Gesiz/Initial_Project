@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.carts',
     'apps.orders',
     'apps.payment',
+    'apps.meiduo_admin',
+    'rest_framework',
     'django_crontab',
     'haystack',
 ]
