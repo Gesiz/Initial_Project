@@ -16,9 +16,9 @@ class UserListAPIView(ListCreateAPIView):
         keyword = self.request.query_params.get('keyword')
         # 如果keyword有值 则进行模糊查询
         if keyword:
-            return User.objects.filter(username__contains=keyword)
+            return User.objects.filter(username__contains=keyword).order_by('id')
         else:
-            return User.objects.all()
+            return User.objects.all().order_by('id')
 
     queryset = User.objects.all()
     serializer_class = UserModelSerializer

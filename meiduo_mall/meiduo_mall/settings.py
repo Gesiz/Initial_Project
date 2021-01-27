@@ -316,3 +316,7 @@ JWT_AUTH = {
         'apps.meiduo_admin.utils.jwt_response_payload_handler',
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7)
 }
+
+# 忽略库时间  或者使用 django.utils 中 timezone
+# now = timezone.now
+USE_TZ = False

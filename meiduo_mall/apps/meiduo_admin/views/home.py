@@ -25,7 +25,7 @@ from datetime import timedelta
 
 class MonthUserAPIView(APIView):
     def get(self, request):
-        today = timezone.now()
+        today = date.today()
         before_date = today - timedelta(days=30)
         # 初始化一个列表
         data_list = []
@@ -39,4 +39,5 @@ class MonthUserAPIView(APIView):
                     'date': start_date
                 }
             )
+
         return Response(data_list)
