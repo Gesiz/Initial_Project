@@ -11,6 +11,8 @@ urlpatterns = [
     path('statistical/day_active/', home.UserActiveAPIView.as_view()),
     # 统计当日下单用户量
     path('statistical/day_orders/', home.UserOrderAPIView.as_view()),
+    # 总用户量
+    path('statistical/total_count/', home.UserTotalAPIView.as_view()),
     # 月增用户统计
     path('statistical/month_increment/', home.MonthUserAPIView.as_view()),
 

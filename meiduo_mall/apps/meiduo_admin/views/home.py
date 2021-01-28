@@ -8,16 +8,26 @@ from django.utils import timezone
 
 class UserActiveAPIView(APIView):
     def get(self, request):
-        today = timezone.now()
+        today = date.today()
         count = User.objects.filter(last_login__gte=today).count()
         return Response({'count': count})
 
 
 class UserOrderAPIView(APIView):
     def get(self, request):
-        today = timezone.now()
-        count = User.objects.filter(orderinfo__create_time__gte=today)
+        today = date.today()
+        count = User.objects.filter(orderinfo__create_time__gte=today).count()
         return Response({'count': count})
+
+
+class UserTotalAPIView(APIView):
+    def get(self, request):
+        today = date.today()
+        count = User.objects.all().count()
+        return Response({
+            "count": count,
+            "date": today
+        })
 
 
 from datetime import timedelta

@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 from apps.goods.models import SKUImage, SKU
 from apps.meiduo_admin.serializers.image import SKUImageModelSerializer, SimpleSKUModelSerializer
-from apps.meiduo_admin.utils import PageNum
+from apps.meiduo_admin.utils import PageNum, PutImage
 
 from rest_framework.generics import ListAPIView
 
@@ -24,8 +24,8 @@ class ImageModelViewSet(ModelViewSet):
         except SKU.DoesNotExist:
             return Response({'msg': '没有此商品'})
 
-        image_url = ''
-
+        image_url = PutImage(upload_image.read())
+        print(image_url)
         new_image = SKUImage.objects.create(
             sku_id=sku_id,
             image=image_url
