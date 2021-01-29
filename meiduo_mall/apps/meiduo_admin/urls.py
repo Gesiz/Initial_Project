@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
 from apps.meiduo_admin.views import home
 from .login import admin_obtain_token
-from apps.meiduo_admin.views import user, image
+from apps.meiduo_admin.views import user, image,sku
 
 urlpatterns = [
     # 添加自定义登录系统 进行管理员登录控制 需要重写 obtain_jwt_token
@@ -21,6 +21,13 @@ urlpatterns = [
 
     # 图片中获取SKU
     path('skus/simple/', image.SimpleSkuListAPIView.as_view()),
+
+    path('skus/categories/', sku.GoodCategoryAPIView.as_view()),
+
+
+    path('goods/<spu_id>/specs/', sku.GoodSpecsAPIView.as_view()),
+
+    path('goods/simple/',sku.SPUSimpleListAPIView.as_view())
 ]
 from rest_framework.routers import DefaultRouter
 
@@ -28,5 +35,8 @@ from rest_framework.routers import DefaultRouter
 router = DefaultRouter()
 # 注册url
 router.register('skus/images', image.ImageModelViewSet, basename='images')
+# 添加
+urlpatterns += router.urls
+router.register('skus', sku.SKUModelViewSet, basename='skus')
 # 添加
 urlpatterns += router.urls

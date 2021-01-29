@@ -35,6 +35,33 @@ class ImageModelViewSet(ModelViewSet):
             'image': new_image.image.url,
         }, status=201)
 
+    def update(self, request, *args, **kwargs):
+        # 1 接收数据
+        data = request.data
+        # 2 提取数据
+        sku_id = data.get('sku')
+        new_upload_image = data.get('image')
+        # 3 验证数据
+
+        # 4 七牛云上传新图片
+        # request.FILES.get('image').read()
+
+        new_image_url = PutImage(data=data.get('image'))
+        # 5 数据更新
+        print(new_image_url)
+        pk = self.kwargs.get('pk')
+        new_image = SKUImage.objects.get(id=pk)
+        new_image.image = new_image_url
+        new_image.save()
+        # 6 返回响应
+        return Response(
+            {
+                'id': new_image.id,
+                'image': new_image.image.url,
+                'sku': sku_id
+            }
+        )
+
 
 class SimpleSkuListAPIView(ListAPIView):
     queryset = SKU.objects.all()
