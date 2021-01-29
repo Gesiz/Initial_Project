@@ -13,8 +13,12 @@ urlpatterns = [
     path('statistical/day_orders/', home.UserOrderAPIView.as_view()),
     # 总用户量
     path('statistical/total_count/', home.UserTotalAPIView.as_view()),
+    # 日增用户统计
+    path('statistical/day_increment/', home.DayUserAPIView.as_view()),
+
     # 月增用户统计
     path('statistical/month_increment/', home.MonthUserAPIView.as_view()),
+
 
     # 获取用户数据
     path('users/', user.UserListAPIView.as_view()),
@@ -30,12 +34,13 @@ urlpatterns = [
     path('goods/simple/',sku.SPUSimpleListAPIView.as_view())
 ]
 from rest_framework.routers import DefaultRouter
-
+# 路由集需要使用router创建路由集
 # 创建router
 router = DefaultRouter()
 # 注册url
 router.register('skus/images', image.ImageModelViewSet, basename='images')
 # 添加
+# SKU展示
 urlpatterns += router.urls
 router.register('skus', sku.SKUModelViewSet, basename='skus')
 # 添加

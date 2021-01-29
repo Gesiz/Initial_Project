@@ -6,7 +6,7 @@ from rest_framework.response import Response
 
 
 class SKUModelViewSet(ModelViewSet):
-    queryset = SKU.objects.all()
+    queryset = SKU.objects.all().order_by('id')
     serializer_class = SKUModelSerializer
     pagination_class = PageNum
 

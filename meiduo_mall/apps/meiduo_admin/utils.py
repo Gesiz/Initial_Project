@@ -1,7 +1,7 @@
 def jwt_response_payload_handler(token, user=None, request=None):
     return {
         'token': token,
-        'user': user.username,
+        'username': user.username,
         'user_id': user.id
     }
 
@@ -47,7 +47,6 @@ def PutImage(data):
     try:
         # 生成上传凭证
         token = q.upload_token(bucket=bucket_name, key=key, expires=3600)
-        # {"hash": "<Hash string>", "key": "<Key string>"} ResponseInfo
         ret, info = put_data(token, key, data)
         image_url = ret['key']
     except Exception as e:

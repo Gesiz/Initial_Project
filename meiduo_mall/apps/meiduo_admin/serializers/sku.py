@@ -55,7 +55,7 @@ class SKUModelSerializer(serializers.ModelSerializer):
             ).update(
                 option_id=spec.get('option_id')
             )
-        pass
+        return instance
 
 
 from apps.goods.models import GoodsCategory

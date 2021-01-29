@@ -33,6 +33,16 @@ class UserTotalAPIView(APIView):
 from datetime import timedelta
 
 
+class DayUserAPIView(APIView):
+    def get(self, request):
+        today = date.today()
+        count = User.objects.filter(date_joined=today).count()
+        return Response({
+            'count': count,
+            'date': today
+        })
+
+
 class MonthUserAPIView(APIView):
     def get(self, request):
         today = date.today()
