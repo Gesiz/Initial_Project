@@ -2,7 +2,7 @@ from django.urls import path
 from rest_framework_jwt.views import obtain_jwt_token
 from apps.meiduo_admin.views import home
 from .login import admin_obtain_token
-from apps.meiduo_admin.views import user, image,sku
+from apps.meiduo_admin.views import user, image,sku,orders
 
 urlpatterns = [
     # 添加自定义登录系统 进行管理员登录控制 需要重写 obtain_jwt_token
@@ -18,6 +18,12 @@ urlpatterns = [
 
     # 月增用户统计
     path('statistical/month_increment/', home.MonthUserAPIView.as_view()),
+
+
+    # 订单管理
+    path('orders/', orders.OrdersInfoAPIView.as_view()),
+    path('orders/<pk>/', orders.OrdersDetailAPIView.as_view()),
+    path('orders/<order_id>/status/', orders.UpdateStatusAPIView.as_view()),
 
 
     # 获取用户数据

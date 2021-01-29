@@ -151,7 +151,7 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
         # 注意 大小写
 
         # '%09d' 不满9位 用0补齐
-        order_id = timezone.localtime().strftime('%Y%m%d%H%M%S') + '%09d' % user.id
+        order_id = timezone.now().strftime('%Y%m%d%H%M%S') + '%09d' % user.id
 
         #         ② 根据支付方式,设置订单状态
         #  现金支付的状态是 待发货   支付宝支付的状态是 待支付
@@ -179,6 +179,7 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
         with transaction.atomic():
             # 一 开始点
             start_point = transaction.savepoint()
+
             order = OrderInfo.objects.create(
                 order_id=order_id,
                 user=user,
@@ -189,14 +190,17 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
                 pay_method=pay_method,
                 status=status  # 支付状态 等待发货 待付款
             )
+
+
             #     4.2 保存订单商品信息
             #         ① 连接redis
             redis_cli = get_redis_connection('carts')
             #         ② 获取选中商品的id {sku_id,sku_id}
-            selected_ids = redis_cli.smembers('selected_%s' % user.id)
+            selected_ids = redis_cli.smembers('select_%s' % user.id)
             #         ③ 获取hash数据(数量)   {sku_id:count,sku_id:count}
             sku_id_counts = redis_cli.hgetall('carts_%s' % user.id)
             #         ④ 遍历选中商品的id
+            print(selected_ids)
             for id in selected_ids:
                 #         ⑤ 查询商品详细信息
                 sku = SKU.objects.get(id=id)
@@ -205,7 +209,6 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
                 custom_count = int(sku_id_counts[id])
                 #         ⑦ 如果不满足,则下单失败
                 # 二 回滚点
-
                 if custom_count > mysql_stock:
                     transaction.savepoint_rollback(start_point)
                     return JsonResponse({'code': 400, 'errmsg': '下单失败,库存不足'})
@@ -214,16 +217,15 @@ class OrderCommitView(LoginRequiredJSONMixin, View):
                 # sku.stock -= custom_count  # 库存减少
                 # sku.save()  # 记得保存
                 old_stock = sku.stock
-
                 new_stock = sku.stock - custom_count
                 new_sales = sku.sales - custom_count
 
                 result = SKU.objects.filter(id=id, stock=old_stock).update(sales=new_sales, stock=new_stock)
-
                 if result == 0:
                     transaction.savepoint_rollback(start_point)
                     return JsonResponse({'code':400,'errmsg':'下单失败内存不足'})
                 #         ⑨ 保存订单商品信息
+                print(order)
                 OrderGoods.objects.create(
                     order=order,
                     sku=sku,
